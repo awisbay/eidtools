@@ -8,4 +8,15 @@ st.title("Welcome to EID Tools for ECT")
 st.divider()
 
 st.image(im, width=1000)
-caption = "Vodafone IX Tool By Yupana"
+caption = "Ericsson Office in Indonesia"
+
+st.divider()
+
+cola, colb = st.columns(spec=2)
+cola.write(
+        f"Made with patience 🤗 and Love 💝"
+    )
+colb.markdown(
+        "<p style='text-align: right;'>ewisbay @2025</p>",
+        unsafe_allow_html=True,
+    )
