@@ -6,6 +6,7 @@ import io
 import zipfile
 from datetime import datetime
 
+@st.cache_data
 def read_excel_file(file, sheet_names_to_try=None):
     """
     Read the Excel file and return a pandas DataFrame
@@ -147,6 +148,7 @@ def write_scripts_to_files(scripts_by_rnc):
     
     return rncs_processed
 
+@st.cache_data
 def main():
     st.title("3G MOCN Utrancell Script")
     st.write("Upload your CDD file to generate Utrancell scripts.")
