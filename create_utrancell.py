@@ -149,7 +149,7 @@ def write_scripts_to_files(scripts_by_rnc):
 
 def main():
     st.title("3G MOCN Utrancell Script")
-    st.write("Upload your Excel file and template file to generate Utrancell scripts.")
+    st.write("Upload your CDD file to generate Utrancell scripts.")
     
     # File uploads
     excel_file = st.file_uploader("Upload Excel file", type=["xlsx", "xls"])

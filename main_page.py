@@ -14,5 +14,5 @@ pg = st.navigation(
         "3G MOCN" : [create_utrancell, cr_generator, baseband_change_cell],
     }
 )
-st.set_page_config(page_title="Eid Tools for ECT", page_icon=":material/edit:")
+st.set_page_config(page_title="Eid Tools for ECT", page_icon="eric.png")
 pg.run()
