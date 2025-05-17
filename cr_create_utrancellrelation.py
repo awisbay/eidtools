@@ -4,35 +4,94 @@ import pandas as pd
 import io
 import zipfile
 from datetime import datetime
+import importlib.util
+import os
 
-# Define templates for each sheet type
+
 TEMPLATES = {
     "Add_InternalUtranRelation": """CREATE
-FDN : SubNetwork={RNC},MeContext={RNC},ManagedElement=1,RncFunction=1,UtranCell={sourcecell},UtranRelation={targetcell}
-utranCellRef : "SubNetwork={RNC},MeContext={RNC},ManagedElement=1,RncFunction=1,UtranCell={targetcell}"
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RNCFunction=1,UtranCell={sourcecell},UtranRelation={targetcell}
+utranCellRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RNCFunction=1,UtranCell={targetcell}"
 hcsSib11Config : {hcsPrio=0, qHcs=0, penaltyTime=0, temporaryOffset1=0, temporaryOffset2=0}
 loadSharingCandidate : {loadsharing}
 qOffset1sn : 0
 qOffset2sn : {qoffset2sn}
+selectionPriority : {selectionprio}
+""",
+    "2G_InterRanMobility" : """SET
+FDN:SubNetwork={BSC},SubNetwork={BSC},MeContext={BSC},ManagedElement={BSC},RNCFunction=1,RNCM=1,GeranCellM=1,GeranCell={gsmcell},Mobility=1,InterRanMobility=1
+umfiIdleList : [{umfiidle}]
+""",
+    "Add_ExternalGsmCell" : """CREATE
+FDN : SubNetwork={rnc},SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,ExternalGsmNetwork={extgsmnetwork},ExternalGsmCell={extgsmcell}
+ExternalGsmCellId : {extgsmcell}
+bandIndicator : {bandindicator}
+bcc : {bcc}
+bcchFrequency : {bcch}
+cellIdentity : {cellid}
+individualOffset : 0
+lac : {lac}
+maxTxPowerUl : 24
+ncc : {ncc}
+qRxLevMin : {qrxlevmin}
+userLabel : {extgsmcell}
+""",
+    "Add_GsmRelation" : """CREATE
+FDN : SubNetwork={rnc},SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},GsmRelation={gsmcell}
+GsmRelationId : {gsmcell}
+externalGsmCellRef : "SubNetwork={rnc},SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,ExternalGsmNetwork={extgsmnetwork},ExternalGsmCell={gsmcell}"
+mobilityRelationType : {mobilityrelationtype}
+qOffset1sn : {qoffset1sn}
 selectionPriority : {selectionprio}
 """
     # Add more templates for other sheets as needed
     # "Another_Sheet_Name": "Another template...",
 }
 
+
+
+
 # Define field mappings for each sheet type
 FIELD_MAPPINGS = {
     "Add_InternalUtranRelation": {
-        "{RNC}": "RNC",
+        "{rnc}": "RNC",
         "{sourcecell}": "SourceCell",
         "{targetcell}": "DestinationCell",
         "{loadsharing}": "loadSharingCandidate",
         "{qoffset2sn}": "qOffset2sn",
         "{selectionprio}": "selectionPriority"
+    },
+    "2G_InterRanMobility": {
+        "{BSC}" : "BSC",
+        "{gsmcell}" : "GeranCell",
+        "{umfiidle}" : "Value"
+    },
+    "Add_ExternalGsmCell": {
+        "{rnc}" : "RNC",
+        "{extgsmnetwork}" : "ExternalGsmNetwork",
+        "{extgsmcell}" : "ExternalGsmCell",
+        "{bandindicator}" : "bandIndicator",
+        "{bcc}" : "bcc",
+        "{bcch}" : "bcchFrequency",
+        "{cellid}" : "cellIdentity",
+        "{lac}" : "lac",
+        "{ncc}" : "ncc",
+        "{qrxlevmin}" : "qRxLevMin"
+    },
+    "Add_GsmRelation": {
+        "{rnc}" : "RNC",
+        "{extgsmnetwork}" : "ExternalGsmNetwork",
+        "{utrancell}" : "UtranCell",
+        "{gsmcell}" : "ExternalGsmCell",
+        "{mobilityrelationtype}" : "mobilityRelationType",
+        "{qoffset1sn}" : "qOffset1sn",
+        "{selectionprio}" : "selectionPriority",
     }
+    # A
     # Add more field mappings for other sheets as needed
     # "Another_Sheet_Name": { ... },
 }
+
 
 def generate_config(df, sheet_name):
     """Generate configuration text from dataframe based on template for the selected sheet."""
@@ -67,23 +126,23 @@ def generate_config(df, sheet_name):
     # Join all configurations with double line breaks
     return "\n\n".join(config_parts)
 
-def generate_configs_by_rnc(df, sheet_name):
+def generate_configs_by_RNC(df, sheet_name):
     """Generate configurations grouped by RNC."""
     if "RNC" not in df.columns:
         return {"ERROR": "RNC column not found in the sheet"}
     
-    rnc_configs = {}
+    RNC_configs = {}
     
     # Group dataframe by RNC
-    for rnc, group_df in df.groupby("RNC"):
-        if pd.isna(rnc):
+    for RNC, group_df in df.groupby("RNC"):
+        if pd.isna(RNC):
             continue
             
         config_text = generate_config(group_df, sheet_name)
         if config_text:
-            rnc_configs[str(rnc)] = config_text
+            RNC_configs[str(RNC)] = config_text
     
-    return rnc_configs
+    return RNC_configs
 
 def main():
     st.title("3G CR CMBulk Generator")
@@ -123,27 +182,27 @@ def main():
                 current_date = datetime.now().strftime('%Y%m%d')
                 
                 # Group configurations by RNC
-                rnc_configs = generate_configs_by_rnc(df, selected_sheet)
+                RNC_configs = generate_configs_by_RNC(df, selected_sheet)
                 
-                if not rnc_configs:
+                if not RNC_configs:
                     st.warning("No valid data found to generate configurations.")
                     st.stop()
                 
                 # If there's only one RNC, provide direct download
-                if len(rnc_configs) == 1:
-                    rnc = list(rnc_configs.keys())[0]
-                    config_text = rnc_configs[rnc]
+                if len(RNC_configs) == 1:
+                    RNC = list(RNC_configs.keys())[0]
+                    config_text = RNC_configs[RNC]
                     
                     # Create filename with RNC and sheet name
-                    filename = f"{rnc}_{selected_sheet}_{current_date}.txt"
+                    filename = f"{RNC}_{selected_sheet}_{current_date}.txt"
                     
                     # Display preview
-                    st.subheader(f"Configuration Preview for RNC: {rnc}")
+                    st.subheader(f"Configuration Preview for RNC: {RNC}")
                     st.text_area("Preview", config_text, height=300)
                     
                     # Download button
                     st.download_button(
-                        label=f"Download Configuration for {rnc}",
+                        label=f"Download Configuration for {RNC}",
                         data=config_text,
                         file_name=filename,
                         mime="text/plain"
@@ -154,20 +213,20 @@ def main():
                     # Create in-memory zip file
                     zip_buffer = io.BytesIO()
                     with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-                        for rnc, config_text in rnc_configs.items():
+                        for RNC, config_text in RNC_configs.items():
                             # Create filename with RNC and sheet name
-                            filename = f"{rnc}_{selected_sheet}_{current_date}.txt"
+                            filename = f"{RNC}_{selected_sheet}_{current_date}.txt"
                             zip_file.writestr(filename, config_text)
                     
                     zip_buffer.seek(0)
                     
                     # Display the RNCs found
-                    st.subheader(f"Multiple RNCs Found: {', '.join(rnc_configs.keys())}")
+                    st.subheader(f"Multiple RNCs Found: {', '.join(RNC_configs.keys())}")
                     st.info(f"A zip file containing separate configuration files for each RNC will be created.")
                     
                     # Let user see a preview of one of the configs
-                    preview_rnc = st.selectbox("Select RNC to preview:", list(rnc_configs.keys()))
-                    st.text_area(f"Preview for RNC: {preview_rnc}", rnc_configs[preview_rnc], height=300)
+                    preview_RNC = st.selectbox("Select RNC to preview:", list(RNC_configs.keys()))
+                    st.text_area(f"Preview for RNC: {preview_RNC}", RNC_configs[preview_RNC], height=300)
                     
                     # Download button for zip file
                     st.download_button(
