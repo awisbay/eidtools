@@ -193,7 +193,9 @@ def main():
     # File uploads
     excel_file = st.file_uploader("Upload CDD Excel file", type=["xlsx", "xls"])
     template_file = "template_script.txt"
-    st.divider()
+    st.markdown("""
+    <div style='height: 6px; background-color: pink; margin: 40px 0;'></div>
+    """, unsafe_allow_html=True)
     st.subheader(":blue[Upload your PW file to generate Delete Utrancell scripts.]")
     excel_file_delete = st.file_uploader("Upload PW file", type=["xlsx", "xls"])
     
@@ -331,11 +333,6 @@ def main():
                     file_name=filename_cmbulk,
                     mime="text/plain"
                 )
-
-
-            # Display the generated content for the text area
-            #st.code(text_area_content)
-
         else:
             st.error("Sheet 'DEL_T-U21' not found in the uploaded file.")
     else:

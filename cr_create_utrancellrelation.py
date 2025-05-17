@@ -50,7 +50,6 @@ selectionPriority : {selectionprio}
 
 
 
-
 # Define field mappings for each sheet type
 FIELD_MAPPINGS = {
     "Add_InternalUtranRelation": {
@@ -144,8 +143,10 @@ def generate_configs_by_RNC(df, sheet_name):
     
     return RNC_configs
 
+
+
 def main():
-    st.title("3G CR CMBulk Generator")
+    st.title(":rainbow[3G CR CMBulk Generator]")
     st.write("This app generates CMBulk script from Excel data.")
     
     # File uploader for Excel file
