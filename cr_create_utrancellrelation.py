@@ -43,9 +43,10 @@ externalGsmCellRef : "SubNetwork={rnc},SubNetwork={rnc},MeContext={rnc},ManagedE
 mobilityRelationType : {mobilityrelationtype}
 qOffset1sn : {qoffset1sn}
 selectionPriority : {selectionprio}
+""",
+    "DEL_UtranRelation" : """DELETE
+FDN : {FDN}
 """
-    # Add more templates for other sheets as needed
-    # "Another_Sheet_Name": "Another template...",
 }
 
 
@@ -85,10 +86,10 @@ FIELD_MAPPINGS = {
         "{mobilityrelationtype}" : "mobilityRelationType",
         "{qoffset1sn}" : "qOffset1sn",
         "{selectionprio}" : "selectionPriority",
+    },
+    "DEL_UtranRelation": {
+        "{FDN}" : "mo",
     }
-    # A
-    # Add more field mappings for other sheets as needed
-    # "Another_Sheet_Name": { ... },
 }
 
 
