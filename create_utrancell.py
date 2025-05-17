@@ -3,6 +3,7 @@ import pandas as pd
 import re
 import os
 import io
+from io import BytesIO
 import zipfile
 from datetime import datetime
 
@@ -148,13 +149,53 @@ def write_scripts_to_files(scripts_by_rnc):
     
     return rncs_processed
 
+def generate_content(df):
+    text_file_content = []
+    text_area_preview = []
+
+    for _, row in df.iterrows():
+        rnc = row['RNC']
+        utrancell = row['UtranCellId']
+        
+        # Format for the text file
+        text_file_content.append(f"SET\nFDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell}\nadministrativeState : 0\n\n")
+        text_file_content.append(f"SET\nFDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},Fach=1\nadministrativeState : 0\n\n")
+        text_file_content.append(f"SET\nFDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},Hsdsch=1\nadministrativeState : 0\n\n")
+        text_file_content.append(f"SET\nFDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},Hsdsch=1,Eul=1\nadministrativeState : 0\n\n")
+        text_file_content.append(f"SET\nFDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},Pch=1\nadministrativeState : 0\n\n")
+        text_file_content.append(f"SET\nFDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},Rach=1\nadministrativeState : 0\n\n")
+        # Format for the text area preview
+        text_area_preview.append(f"cmedit delete SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell} --FORCE --ALL\n")
+    
+    # Join the preview content for display in the text area
+    text_area_content = "\n".join(text_area_preview)
+
+    return text_file_content, text_area_content
+
+def create_zip_file(rnc_list, text_file_content):
+    # Create a buffer to store the zip content
+    zip_buffer = BytesIO()
+    
+    # Create a zip file in the buffer
+    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for rnc in rnc_list:
+            filename = f"{rnc}_Delete_Utrancell_{datetime.now().strftime('%Y%m%d')}.txt"
+            zipf.writestr(filename, "".join(text_file_content))
+    
+    # Seek to the start of the buffer before returning
+    zip_buffer.seek(0)
+    return zip_buffer
+
 def main():
-    st.title("3G MOCN Utrancell Script")
-    st.write("Upload your CDD file to generate Utrancell scripts.")
+    st.title(":rainbow[3G MOCN Utrancell Script]")
+    st.subheader(":green[Upload your CDD file to generate Utrancell scripts.]")
     
     # File uploads
-    excel_file = st.file_uploader("Upload Excel file", type=["xlsx", "xls"])
+    excel_file = st.file_uploader("Upload CDD Excel file", type=["xlsx", "xls"])
     template_file = "template_script.txt"
+    st.divider()
+    st.subheader(":blue[Upload your PW file to generate Delete Utrancell scripts.]")
+    excel_file_delete = st.file_uploader("Upload PW file", type=["xlsx", "xls"])
     
     # Custom sheet name input
     sheet_names = ["UMTS_2100", "U2100"]
@@ -231,6 +272,75 @@ def main():
             
             except Exception as e:
                 st.error(f"An error occurred: {e}")
+    
+    if excel_file_delete is not None:
+    # Read the Excel file
+        xls = pd.ExcelFile(excel_file_delete)
+    
+    # Load the 'DEL_T-U21' sheet into a DataFrame
+        if 'DEL_T-U21' in xls.sheet_names:
+            df = pd.read_excel(xls, sheet_name='DEL_T-U21')
+            text_file_content, text_area_content = generate_content(df)
+            
+            # Get the unique RNC values
+            rnc_list = df['RNC'].unique()
+
+            # Generate filename based on RNC and date
+            date_str = datetime.now().strftime('%Y%m%d')
+            if len(rnc_list) > 1:
+                # If more than 2 RNC values, create a zip file
+                zip_buffer_cmbulk = create_zip_file(rnc_list, text_file_content)
+                zip_buffer_cmedit = create_zip_file(rnc_list, text_area_content)
+                st.write("Preview CMBulk File Locked Utrancell Script")
+                with st.expander("Click to view script"):
+                    st.code(text_file_content)
+                st.download_button(
+                    label="Download CMBulk Zipped Files",
+                    data=zip_buffer_cmbulk,
+                    file_name=f"RNC_Delete_Utrancell_{date_str}.zip",
+                    mime="application/zip"
+                )
+                st.write("Preview CMEdit File Delete Utrancell Script")
+                with st.expander("Click to view script"):
+                    st.code(text_area_content)
+                st.download_button(
+                    label="Download CMEdit Zipped Files",
+                    data=zip_buffer_cmedit,
+                    file_name=f"RNC_Delete_Utrancell_{date_str}.zip",
+                    mime="application/zip"
+                )
+            else:
+                # If there's only 1 RNC, generate a single text file
+                st.write("Preview CMBulk File Locked Utrancell Script")
+                with st.expander("Click to view script"):
+                    st.code("".join(text_file_content))
+                filename_cmbulk = f"{rnc_list[0]}_Delete_Utrancell_CMBUlk_{date_str}.txt"
+                st.download_button(
+                    label="Download CMBulk Text File",
+                    data="".join(text_file_content),
+                    file_name=filename_cmbulk,
+                    mime="text/plain"
+                )
+                st.write("Preview CMEdit File Delete Utrancell Script")
+                with st.expander("Click to view script"):
+                    st.code(text_area_content)
+                filename_cmbulk = f"{rnc_list[0]}_Delete_Utrancell_CMEdit_{date_str}.txt"
+                st.download_button(
+                    label="Download CMEdit Text File",
+                    data="".join(text_area_content),
+                    file_name=filename_cmbulk,
+                    mime="text/plain"
+                )
+
+
+            # Display the generated content for the text area
+            #st.code(text_area_content)
+
+        else:
+            st.error("Sheet 'DEL_T-U21' not found in the uploaded file.")
+    else:
+        st.warning('⚠️ Please make sure you have sheet "DEL_T-U21" ⚠️')
+
 
 if __name__ == "__main__":
     main()
