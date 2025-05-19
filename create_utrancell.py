@@ -56,7 +56,7 @@ def create_mapping():
         'LAC' : 'LAC',
         'URA' : 'URA',
         'utrancell' : 'UtrancellID',
-        'Cellid' : 'CID',
+        'cellid' : 'CID',
         'RAC' : 'RAC',
         'rbsid' : 'RBS ID',
         'earfcnul' : 'UUARFCN',
@@ -65,7 +65,11 @@ def create_mapping():
         'longitude' : 'WGS84-Long',
         'latitude' : 'WGS84-Lat',
         'tcell' : 'tCell',
-        'iphost' : "Technology"
+        'iphost' : "Technology",
+        'servicearea' : 'SAC',
+        'localcellid' : 'localCellID',
+        'maxtranspwr' : 'maximumTransmissionPower',
+        'cpichpower' : 'primaryCpichPower'
     }
     
     return mapping
@@ -192,17 +196,18 @@ def main():
     
     # File uploads
     excel_file = st.file_uploader("Upload CDD Excel file", type=["xlsx", "xls"])
-    template_file = "template_script.txt"
-    st.markdown("""
-    <div style='height: 6px; background-color: pink; margin: 40px 0;'></div>
-    """, unsafe_allow_html=True)
-    st.subheader(":blue[Upload your PW file to generate Delete Utrancell scripts.]")
-    excel_file_delete = st.file_uploader("Upload PW file", type=["xlsx", "xls"])
-    
+    #template_file = "template_script.txt"
     # Custom sheet name input
     sheet_names = ["UMTS_2100", "U2100"]
+
+    # select template
+    template_folder = "template_utrancell"  # example folder
+    template_path = os.path.join(os.getcwd(), template_folder)
+    template_files = [f for f in os.listdir(template_path) if f.endswith(".txt")]
+
     
-    if excel_file and template_file:
+    if excel_file and template_files:
+        selected_template = st.selectbox("Please select template to process", template_files)
         if st.button("Generate Scripts"):
             st.write("Processing files...")
             
@@ -210,8 +215,9 @@ def main():
                 # Read Excel file
                 df = read_excel_file(excel_file, sheet_names)
                 
+                selected_template_path = os.path.join(template_path, selected_template)
                 # Read template file
-                with open("template_script.txt", "r", encoding="utf-8") as template:
+                with open(selected_template_path, "r", encoding="utf-8") as template:
                     # Read the contents of the file
                     template_content = template.read()
                 #st.success(f"Template file read successfully with {len(template_content)} characters")
@@ -274,6 +280,13 @@ def main():
             
             except Exception as e:
                 st.error(f"An error occurred: {e}")
+    
+    st.markdown("""
+    <div style='height: 6px; background-color: pink; margin: 40px 0;'></div>
+    """, unsafe_allow_html=True)
+    st.subheader(":blue[Upload your PW file to generate Delete Utrancell scripts.]")
+    excel_file_delete = st.file_uploader("Upload PW file", type=["xlsx", "xls"])
+
     
     if excel_file_delete is not None:
     # Read the Excel file
