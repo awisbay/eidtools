@@ -1,33 +1,33 @@
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,IubLink={@NodeID}
-rbsId : @RBSID
-remoteCpIpAddress1 : @CPIP
-userLabel : "{@NodeID}"
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,IubLink={iublink}
+rbsId : {rbsid}
+remoteCpIpAddress1 : {iphost}
+userLabel : "{iublink}"
 userPlaneTransportOption : {ipv4=1, atm=0}
 controlPlaneTransportOption : {ipv4=1, atm=0}
 userPlaneIpResourceRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,IpSystem=1,IpAccessHostPool=IuB"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,IubLink={@NodeID},IubEdch=1
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,IubLink={iublink},IubEdch=1
 edchDataFrameDelayThreshold : 60
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,LocationArea=@LAC,RoutingArea=@RAC
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,LocationArea={LAC},RoutingArea={RAC}
 nmo : 1
-rac : @RAC
+rac : {RAC}
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,Ura=@URA
-uraIdentity : @URA
-userLabel : "URA_@URA"
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,Ura={URA}
+uraIdentity : {URA}
+userLabel : "URA_{URA}"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,LocationArea=@LAC,ServiceArea=@SAC
-sac : @SAC
-userLabel : "SAC_@SAC"
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,LocationArea={LAC},ServiceArea={servicearea}
+sac : {servicearea}
+userLabel : "SAC_{servicearea}"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell}
 absPrioCellRes : {cellReselectionPriority=2, sPrioritySearch1=62, sPrioritySearch2=0, threshServingLow=16, measIndFach=1}
 accessClassNBarred : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 accessClassesBarredCs : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -39,7 +39,7 @@ amrNbSelector : 0
 amrWbRateDlMax : 12650
 amrWbRateUlMax : 12650
 anrIafUtranCellConfig : {anrEnabled=0, relationAddEnabled=0}
-antennaPosition : {latitudeSign=0, latitude=@LAT, longitude=@LONG}
+antennaPosition : {latitudeSign=0, latitude={latitude}, longitude={longitude}}
 aseDlAdm : 500
 aseLoadThresholdUlSpeech : {amr12200=100, amr7950=100, amr5900=100}
 aseUlAdm : 500
@@ -52,7 +52,7 @@ autoAcbRtwpThresh : -70
 autoAcbRtwpWeight : 10
 #autoAcbUpdatePeriodicity : 10 //parameter not found
 bchPower : -31
-cId : @CID
+cId : {cellid}
 cbsSchedulePeriodLength : 64
 cellBroadcastSac : -1
 cellReserved : 0
@@ -115,18 +115,18 @@ individualOffset : 0
 interFreqFddMeasIndicator : 1
 interPwrMax : 38
 interRate : 7760
-iubLinkRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,IubLink={@NodeID}"
+iubLinkRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,IubLink={iublink}"
 loadBasedHoSupport : 1
 loadBasedHoType : 1
 loadSharingGsmFraction : 100
 loadSharingGsmThreshold : 77
 loadSharingMargin : 0
-localCellId : @Locell
-locationAreaRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,LocationArea=@LAC"
+localCellId : {localcellid}
+locationAreaRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,LocationArea={LAC}"
 maxPwrMax : 48
 maxRate : 40690
 maxTxPowerUl : 24
-maximumTransmissionPower : @Maxpower
+maximumTransmissionPower : {maxtranspwr}
 minPwrMax : 0
 minPwrRl : -150
 minimumRate : 1590
@@ -134,9 +134,9 @@ mocnCellProfileRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunct
 nOutSyncInd : 10
 pagingPermAccessCtrl : {locRegRestr=0, pagingRespRestr=0, locRegAcb=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
 pathlossThreshold : 170
-primaryCpichPower : @Cpich
+primaryCpichPower : {cpichpower}
 primarySchPower : -18
-primaryScramblingCode : @PSC
+primaryScramblingCode : {scrambling}
 primaryTpsCell : 0
 pwrAdm : 97
 #pwrCongFilter : 1 //parameter not found
@@ -160,7 +160,7 @@ releaseRedirectHsIfls : 0
 reportingRange1a : 0
 reportingRange1b : 0
 rlFailureT : 10
-routingAreaRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,LocationArea=@LAC,RoutingArea=@RAC"
+routingAreaRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,LocationArea={LAC},RoutingArea={RAC}"
 rrcLcEnabled : 0
 rwrEutraCc : 1
 sHcsRat : -105
@@ -170,7 +170,7 @@ sRatSearch : -2
 secondaryCpichPower : 0
 secondarySchPower : -35
 servDiffRrcAdmHighPrioProfile : 0
-serviceAreaRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,LocationArea=@LAC,ServiceArea=@SAC"
+serviceAreaRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,LocationArea={LAC},ServiceArea={servicearea}"
 serviceRestrictions : {csVideoCalls=0}
 sf128Adm : 128
 sf16Adm : 16
@@ -187,7 +187,7 @@ spare : 0
 spareA : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 srbAdmExempt : 0
 standAloneSrbSelector : 1
-tCell : @TCELL
+tCell : {tcell}
 #tfsFlexConstant : 10 //parameter not found
 timeToTrigger1a : -1
 timeToTrigger1b : -1
@@ -199,16 +199,16 @@ transmissionScheme : 0
 treSelection : 1
 #txFilter : 5 //parameter not found
 #txInterval : 1000 //parameter not found
-uarfcnDl : 10638
-uarfcnUl : 9688
+uarfcnDl : {earfcndl}
+uarfcnUl : {earfcnul}
 updateLocator : 0
-uraRef : ["SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,Ura=@URA"]
+uraRef : ["SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,Ura={URA}"]
 usedFreqThresh2dEcno : -14
 usedFreqThresh2dRscp : -102
-userLabel : "@Cell"
+userLabel : "{utrancell}"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell,Rach=1
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},Rach=1
 administrativeState : 0
 aichPower : -6
 aichTransmissionTiming : 4
@@ -228,7 +228,7 @@ subChannelNo : 4095
 userLabel : "Rach_1"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell,Pch=1
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},Pch=1
 administrativeState : 0
 pchPower : -4
 #pichMode : 18 //parameter not found
@@ -237,7 +237,7 @@ sccpchOffset : 20
 userLabel : "Pch_1"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell,Hsdsch=1
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},Hsdsch=1
 administrativeState : 0
 codeThresholdPdu656 : 0
 cqiFeedbackCycle : 8
@@ -255,7 +255,7 @@ numHsScchCodes : 2
 userLabel : "Hsdsch_1"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell,Fach=1
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},Fach=1
 administrativeState : 0
 #fach1RateMatchingAttrDl : 220 //parameter not found
 #fach2RateMatchingAttrDl : 130 //parameter not found
@@ -267,7 +267,7 @@ sccpchOffset : 0
 userLabel : "Fach_1"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell,Hsdsch=1,Eul=1
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},Hsdsch=1,Eul=1
 administrativeState : 0
 eulDchBalancingEnabled : 0
 eulDchBalancingLoad : 32
@@ -320,7 +320,7 @@ eutraDetection : 1
 measBandwidth : 6
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell,EutranFreqRelation=1275
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},EutranFreqRelation=1275
 cellReselectionPriority : 6
 coSitedCellAvailable : 0
 eutranFrequencyRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1,EutranFrequency=1275"
@@ -335,7 +335,7 @@ threshLow2 : 10
 userLabel : "EutranFreqRelation_1275"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell,EutranFreqRelation=40988
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},EutranFreqRelation=40988
 cellReselectionPriority : 7
 eutranFrequencyRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1,EutranFrequency=40988"
 qQualMin : -17
@@ -349,7 +349,7 @@ threshLow2 : 10
 userLabel : "EutranFreqRelation_40988"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell,EutranFreqRelation=40790
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},EutranFreqRelation=40790
 cellReselectionPriority : 7
 eutranFrequencyRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1,EutranFrequency=40790"
 qQualMin : -17
@@ -363,7 +363,7 @@ threshLow2 : 10
 userLabel : "EutranFreqRelation_40790"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell,EutranFreqRelation=9260
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},EutranFreqRelation=9260
 cellReselectionPriority : 4
 eutranFrequencyRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1,EutranFrequency=9260"
 qQualMin : -17
@@ -377,7 +377,7 @@ threshLow2 : 10
 userLabel : "EutranFreqRelation_9260"
 
 CREATE
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell,EutranFreqRelation=3750
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell},EutranFreqRelation=3750
 cellReselectionPriority : 4
 eutranFrequencyRef : "SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1,EutranFrequency=3750"
 qQualMin : -17
@@ -391,11 +391,11 @@ threshLow2 : 10
 userLabel : "EutranFreqRelation_3750"
 
 SET
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,IubLink={@NodeID}
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,IubLink={iublink}
 ulHwAdm : 95
 
 SET
-FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell=@Cell
+FDN : SubNetwork={rnc},MeContext={rnc},ManagedElement=1,RncFunction=1,UtranCell={utrancell}
 anrEutranUtranCellConfig : {anrEnabled=0}
 anrIafUtranCellConfig : {anrEnabled=1, relationAddEnabled=1, relationRemoveEnabled=1, sib11IafAnclEnabled=1}
 anrIefUtranCellConfig : {anrEnabled=1, sib11IefAnclEnabled=1}
