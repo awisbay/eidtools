@@ -1,0 +1,694 @@
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1"
+   identity "{iublink}"
+   moType IubLink
+   exception none
+   nrOfAttributes 6
+   rbsId Integer {rbsid}
+   remoteCpIpAddress1 String "{iphost}"
+   userLabel String "{iublink}"
+   userPlaneTransportOption Struct
+      nrOfElements 2
+         atm Integer 0
+         ipv4 Integer 1
+   controlPlaneTransportOption Struct
+      nrOfElements 2
+         atm Integer 0
+         ipv4 Integer 1
+   userPlaneIpResourceRef Ref "ManagedElement=1,IpSystem=1,IpAccessHostPool=IuB"
+)
+
+CREATE
+(
+	parent "ManagedElement=1,RncFunction=1"
+	identity "{LAC}"
+	moType LocationArea
+	exception none
+	nrOfAttributes 2
+		lac Integer {LAC}
+		userLabel String "LAC_{LAC}"
+)
+
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,IubLink={iublink}"
+   identity "1"
+   moType IubEdch
+   exception none
+   nrOfAttributes 1
+   edchDataFrameDelayThreshold Integer 60
+)
+
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,LocationArea={LAC}"
+   identity "{RAC}"
+   moType RoutingArea
+   exception none
+   nrOfAttributes 2
+   nmo Integer 1
+   rac Integer {RAC}
+)
+
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1"
+   identity "{URA}"
+   moType Ura
+   exception none
+   nrOfAttributes 2
+   uraIdentity Integer {URA}
+   userLabel String "URA_{URA}"
+)
+
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,LocationArea={LAC}"
+   identity "{servicearea}"
+   moType ServiceArea
+   exception none
+   nrOfAttributes 2
+   sac Integer {servicearea}
+   userLabel String "SAC_{servicearea}"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1"
+   identity "{utrancell}"
+   moType UtranCell
+   exception none
+   nrOfAttributes 178
+   absPrioCellRes Struct
+      nrOfElements 5
+         cellReselectionPriority Integer 2
+         sPrioritySearch1 Integer 62
+         sPrioritySearch2 Integer 0
+         threshServingLow Integer 16
+         measIndFach Integer 1
+   accessClassNBarred Array Integer 16
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+   accessClassesBarredCs Array Integer 16
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+   accessClassesBarredPs Array Integer 16
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+   admBlockRedirection Struct
+      nrOfElements 3
+         gsmRrc Integer 0
+         rrc Integer 0
+         speech Integer 0
+   administrativeState Integer 0
+   agpsEnabled Integer 1
+   amrNbSelector Integer 0
+   amrWbRateDlMax Integer 12650
+   amrWbRateUlMax Integer 12650
+   anrIafUtranCellConfig Struct
+      nrOfElements 2
+         anrEnabled Integer 0
+         relationAddEnabled Integer 0
+   antennaPosition Struct
+      nrOfElements 3
+         latitudeSign Integer 0
+         latitude Integer {latitude}
+         longitude Integer {longitude}
+   aseDlAdm Integer 500
+   aseLoadThresholdUlSpeech Struct
+      nrOfElements 3
+         amr12200 Integer 100
+         amr7950 Integer 100
+         amr5900 Integer 100
+   aseUlAdm Integer 500
+   autoAcbEnabled Integer 0
+   autoAcbMaxPsClassesToBar Integer 10
+   autoAcbMinRcssrInput Integer 5
+   autoAcbRcssrThresh Integer 50
+   autoAcbRcssrWeight Integer 2
+   autoAcbRtwpThresh Integer -70
+   autoAcbRtwpWeight Integer 10
+   autoAcbUpdatePeriodicity Integer 10
+   bchPower Integer -31
+   cId Integer {servicearea}
+   cbsSchedulePeriodLength Integer 64
+   cellBroadcastSac Integer -1
+   cellReserved Integer 0
+   cellUpdateConfirmCsInitRepeat Integer 3
+   cellUpdateConfirmPsInitRepeat Integer 3
+   codeLoadThresholdDlSf128 Integer 100
+   compModeAdm Integer 15
+   ctchAdmMargin Integer 0
+   ctchOccasionPeriod Integer 256
+   cyclicAcb Struct
+      nrOfElements 2
+         acbEnabled Integer 0
+         rotationGroupSize Integer 5
+   cyclicAcbCs Struct
+      nrOfElements 2
+         acbEnabled Integer 0
+         rotationGroupSize Integer 5
+   cyclicAcbPs Struct
+      nrOfElements 2
+         acbEnabled Integer 0
+         rotationGroupSize Integer 5
+   dchIflsMarginCode Integer 0
+   dchIflsMarginPower Integer 0
+   dchIflsThreshCode Integer 0
+   dchIflsThreshPower Integer 0
+   dlCodeAdm Integer 95
+   dlCodeOffloadLimit Integer 100
+   dlCodePowerCmEnabled Integer 0
+   dlPowerOffloadLimit Integer 100
+   dmcrEnabled Integer 0
+   dnclEnabled Integer 0
+   downswitchTimer Integer -1
+   eulMcServingCellUsersAdmTti2 Integer 3
+   eulNonServingCellUsersAdm Integer 100
+   eulServingCellUsersAdm Integer 128
+   eulServingCellUsersAdmTti2 Integer 4
+   fPwrDown Integer 100
+   fPwrUp Integer 100
+   fachMeasOccaCycLenCoeff Integer 3
+   ganHoEnabled Integer 0
+   hardIfhoCorr Integer 3
+   hcsSib3Config Struct
+      nrOfElements 3
+         hcsPrio Integer 0
+         qHcs Integer 0
+         sSearchHcs Integer -105
+   hcsUsage Struct
+      nrOfElements 2
+         idleMode Integer 0
+         connectedMode Integer 0
+   hoType Integer 0
+   hsIflsDownswitchTrigg Struct
+      nrOfElements 3
+         toFach Integer 0
+         toUra Integer 0
+         fastDormancy Integer 0
+   hsIflsHighLoadThresh Integer 100
+   hsIflsMarginUsers Integer 0
+   hsIflsPowerLoadThresh Integer 0
+   hsIflsRedirectLoadLimit Integer 0
+   hsIflsSpeechMultiRabTrigg Integer 1
+   hsIflsThreshUsers Integer 0
+   hsIflsTrigger Struct
+      nrOfElements 2
+         fromFach Integer 1
+         fromUra Integer 1
+   hsdpaUsersAdm Integer 128
+   hsdpaUsersOffloadLimit Integer 100
+   hsdschInactivityTimer Integer 5
+   hsdschInactivityTimerCpc Integer -1
+   iFCong Integer 621
+   iFHyst Integer 6000
+   ifIratHoPsIntHsEnabled Integer 1
+   iflsCpichEcnoThresh Integer -24
+   iflsMode Integer 2
+   iflsRedirectUarfcn Integer 0
+   inactivityTimeMultiPsInteractive Integer -1
+   inactivityTimer Integer -1
+   inactivityTimerEnhUeDrx Integer -1
+   inactivityTimerPch Integer -1
+   individualOffset Integer 0
+   intCongFilter Integer 1
+   interFreqFddMeasIndicator Integer 1
+   interPwrMax Integer 38
+   interRate Integer 7760
+   iubLinkRef Ref "ManagedElement=1,RncFunction=1,IubLink={iublink}"
+   loadBasedHoSupport Integer 1
+   loadBasedHoType Integer 1
+   loadSharingGsmFraction Integer 100
+   loadSharingGsmThreshold Integer 77
+   loadSharingMargin Integer 0
+   localCellId Integer {localcellid}
+   locationAreaRef Ref "ManagedElement=1,RncFunction=1,LocationArea={LAC}"
+   maxPwrMax Integer 48
+   maxRate Integer 40690
+   maxTxPowerUl Integer 24
+   maximumTransmissionPower Integer 430
+   minPwrMax Integer 0
+   minPwrRl Integer -150
+   minimumRate Integer 1590
+   mocnCellProfileRef Ref "ManagedElement=1,RncFunction=1,MocnCellProfile=MOCN"
+   nOutSyncInd Integer 10
+   pagingPermAccessCtrl Struct
+      nrOfElements 3
+         locRegAcb Array Integer 15 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+         locRegRestr Integer 0
+         pagingRespRestr Integer 0
+   pathlossThreshold Integer 170
+   primaryCpichPower Integer 330
+   primarySchPower Integer -18
+   primaryScramblingCode Integer {scrambling}
+   primaryTpsCell Integer 0
+   pwrAdm Integer 97
+   pwrCongFilter Integer 1
+   pwrHyst Integer 300
+   pwrLoadThresholdDlSpeech Struct
+      nrOfElements 3
+         amr12200 Integer 100
+         amr7950 Integer 100
+         amr5900 Integer 100
+   pwrOffset Integer 2
+   qHyst1 Integer 4
+   qHyst2 Integer 2
+   qQualMin Integer -17
+   qRxLevMin Integer -109
+   qualMeasQuantity Integer 2
+   rachOverloadProtect Integer 1
+   rateSelectionPsInteractive Struct
+      nrOfElements 3
+         channelType Integer 0
+         ulPrefRate Integer 64
+         dlPrefRate Integer 64
+   rcssrFilter Integer 60
+   redirectUarfcn Integer 0
+   releaseAseDl Integer 1
+   releaseAseDlNg Integer 3
+   releaseRedirect Integer 1
+   releaseRedirectEutraTriggers Struct
+      nrOfElements 6
+         csFallbackCsRelease Integer 1
+         csFallbackDchToFach Integer 1
+         dchToFach Integer 1
+         fachToUra Integer 1
+         fastDormancy Integer 1
+         normalRelease Integer 1
+   releaseRedirectHsIfls Integer 0
+   reportingRange1a Integer 0
+   reportingRange1b Integer 0
+   rlFailureT Integer 10
+   routingAreaRef Ref "ManagedElement=1,RncFunction=1,LocationArea={LAC},RoutingArea={RAC}"
+   rrcLcEnabled Integer 0
+   rwrEutraCc Integer 1
+   sHcsRat Integer -105
+   sInterSearch Integer 19
+   sIntraSearch Integer 22
+   sRatSearch Integer -2
+   secondaryCpichPower Integer 0
+   secondarySchPower Integer -35
+   servDiffRrcAdmHighPrioProfile Integer 0
+   serviceAreaRef Ref "ManagedElement=1,RncFunction=1,LocationArea={LAC},ServiceArea={servicearea}"
+   serviceRestrictions Struct
+      nrOfElements 1
+         csVideoCalls Integer 0
+   sf128Adm Integer 128
+   sf16Adm Integer 16
+   sf16AdmUl Integer 16
+   sf16gAdm Integer 16
+   sf32Adm Integer 32
+   sf4AdmUl Integer 0
+   sf64AdmUl Integer 100
+   sf8Adm Integer 2
+   sf8AdmUl Integer 2
+   sf8gAdmUl Integer 2
+   sib1PlmnScopeValueTag Integer 1
+   spare Integer 0
+   spareA Array Integer 10
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+      0
+   srbAdmExempt Integer 0
+   standAloneSrbSelector Integer 1
+   tCell Integer {tcell}
+   tfsFlexConstant Integer 10
+   timeToTrigger1a Integer -1
+   timeToTrigger1b Integer -1
+   tmCongAction Integer 2000
+   tmCongActionNg Integer 800
+   tmInitialG Integer 3000
+   tpsCellThresholds Struct
+      nrOfElements 3
+         tpsCellThreshEnabled Integer 0
+         tpsLockThreshold Integer 5
+         tpsUnlockThreshold Integer 15
+   transmissionScheme Integer 0
+   treSelection Integer 1
+   txFilter Integer 5
+   txInterval Integer 1000
+   uarfcnDl Integer 10563
+   uarfcnUl Integer 9613
+   updateLocator Integer 0
+   uraRef Array Reference 1
+      "ManagedElement=1,RncFunction=1,Ura={URA}"
+   usedFreqThresh2dEcno Integer -14
+   usedFreqThresh2dRscp Integer -102
+   userLabel String "{utrancell}"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+   identity "1"
+   moType Rach
+   exception none
+   nrOfAttributes 17
+   administrativeState Integer 0
+   aichPower Integer -6
+   aichTransmissionTiming Integer 4
+   constantValueCprach Integer -19
+   increasedRachCoverageEnabled Integer 1
+   maxPreambleCycle Integer 32
+   nb01Max Integer 0
+   nb01Min Integer 0
+   powerOffsetP0 Integer 1
+   powerOffsetPpm Integer -4
+   preambleRetransMax Integer 32
+   preambleSignatures Integer 65535
+   preambleThreshold Integer 34
+   scramblingCodeWordNo Integer 0
+   spreadingFactor Integer 64
+   subChannelNo Integer 4095
+   userLabel String "Rach_1"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+   identity "1"
+   moType Pch
+   exception none
+   nrOfAttributes 6
+   administrativeState Integer 0
+   pchPower Integer -4
+   pichMode Integer 18
+   pichPower Integer -7
+   sccpchOffset Integer 20
+   userLabel String "Pch_1"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+   identity "1"
+   moType Hsdsch
+   exception none
+   nrOfAttributes 15
+   administrativeState Integer 0
+   codeThresholdPdu656 Integer 0
+   cqiFeedbackCycle Integer 8
+   deltaAck1 Integer 4
+   deltaAck2 Integer 8
+   deltaCqi1 Integer 4
+   deltaCqi2 Integer 8
+   deltaNack1 Integer 4
+   deltaNack2 Integer 8
+   hsMeasurementPowerOffset Integer 80
+   initialAckNackRepetitionFactor Integer 1
+   initialCqiRepetitionFactor Integer 1
+   numHsPdschCodes Integer 5
+   numHsScchCodes Integer 2
+   userLabel String "Hsdsch_1"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+   identity "1"
+   moType Fach
+   exception none
+   nrOfAttributes 9
+   administrativeState Integer 0
+   fach1RateMatchingAttrDl Integer 220
+   fach2RateMatchingAttrDl Integer 130
+   maxFach1Power Integer 18
+   maxFach2Power Integer 15
+   pOffset1Fach Integer 0
+   pOffset3Fach Integer 0
+   sccpchOffset Integer 0
+   userLabel String "Fach_1"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,UtranCell={utrancell},Hsdsch=1"
+   identity "1"
+   moType Eul
+   exception none
+   nrOfAttributes 15
+   administrativeState Integer 0
+   eulDchBalancingEnabled Integer 0
+   eulDchBalancingLoad Integer 32
+   eulDchBalancingOverload Integer 0
+   eulDchBalancingReportPeriod Integer 200
+   eulDchBalancingSuspendDownSw Integer 0
+   eulDchBalancingTimerNg Integer 1000
+   eulLoadTriggeredSoftCong Integer 0
+   eulMaxTargetRtwp Integer -499
+   numEagchCodes Integer 1
+   numEhichErgchCodes Integer 2
+   pathlossThresholdEulTti2 Integer 170
+   releaseAseUlNg Integer 3
+   threshEulTti2Ecno Integer -24
+   userLabel String "Eul_1"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1"
+   identity "100"
+   moType EutranFrequency
+   exception none
+   nrOfAttributes 4
+   anrEnabled Integer 0
+   earfcnDl Integer 100
+   eutraDetection Integer 1
+   measBandwidth Integer 6
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1"
+   identity "3750"
+   moType EutranFrequency
+   exception none
+   nrOfAttributes 4
+   anrEnabled Integer 0
+   earfcnDl Integer 3750
+   eutraDetection Integer 1
+   measBandwidth Integer 6
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1"
+   identity "9360"
+   moType EutranFrequency
+   exception none
+   nrOfAttributes 4
+   anrEnabled Integer 0
+   earfcnDl Integer 9360
+   eutraDetection Integer 1
+   measBandwidth Integer 6
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1"
+   identity "38852"
+   moType EutranFrequency
+   exception none
+   nrOfAttributes 4
+   anrEnabled Integer 0
+   earfcnDl Integer 38852
+   eutraDetection Integer 1
+   measBandwidth Integer 6
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1"
+   identity "40790"
+   moType EutranFrequency
+   exception none
+   nrOfAttributes 4
+   anrEnabled Integer 0
+   earfcnDl Integer 40790
+   eutraDetection Integer 1
+   measBandwidth Integer 6
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+   identity "100"
+   moType EutranFreqRelation
+   exception none
+   nrOfAttributes 13
+   cellReselectionPriority Integer 6
+   coSitedCellAvailable Integer 1
+   eutranFrequencyRef Ref "ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1,EutranFrequency=100"
+   qQualMin Integer -17
+   qRxLevMin Integer -110
+   redirectionOrder Integer 2
+   thresh2dRwr Integer -95
+   threshHigh Integer 0
+   threshHigh2 Integer 10
+   threshLow Integer 0
+   threshLow2 Integer 10
+   userLabel String "EutranFreqRelation_100"
+   barredCnOperatorRef Array Reference 1
+     "ManagedElement=1,RncFunction=1,CnOperator=1"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+   identity "3750"
+   moType EutranFreqRelation
+   exception none
+   nrOfAttributes 13
+   cellReselectionPriority Integer 4
+   coSitedCellAvailable Integer 1
+   eutranFrequencyRef Ref "ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1,EutranFrequency=3750"
+   qQualMin Integer -17
+   qRxLevMin Integer -110
+   redirectionOrder Integer 5
+   thresh2dRwr Integer -98
+   threshHigh Integer 0
+   threshHigh2 Integer 10
+   threshLow Integer 0
+   threshLow2 Integer 10
+   userLabel String "EutranFreqRelation_3750"
+   barredCnOperatorRef Array Reference 1
+     "ManagedElement=1,RncFunction=1,CnOperator=2"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+   identity "38852"
+   moType EutranFreqRelation
+   exception none
+   nrOfAttributes 13
+   cellReselectionPriority Integer 5
+   coSitedCellAvailable Integer 1
+   eutranFrequencyRef Ref "ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1,EutranFrequency=38852"
+   qQualMin Integer -17
+   qRxLevMin Integer -110
+   redirectionOrder Integer 1
+   thresh2dRwr Integer -95
+   threshHigh Integer 0
+   threshHigh2 Integer 10
+   threshLow Integer 0
+   threshLow2 Integer 10
+   userLabel String "EutranFreqRelation_38852"
+   barredCnOperatorRef Array Reference 1
+     "ManagedElement=1,RncFunction=1,CnOperator=1"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+   identity "9360"
+   moType EutranFreqRelation
+   exception none
+   nrOfAttributes 13
+   cellReselectionPriority Integer 4
+   coSitedCellAvailable Integer 1
+   eutranFrequencyRef Ref "ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1,EutranFrequency=9360"
+   qQualMin Integer -17
+   qRxLevMin Integer -110
+   redirectionOrder Integer 4
+   thresh2dRwr Integer -95
+   threshHigh Integer 0
+   threshHigh2 Integer 10
+   threshLow Integer 0
+   threshLow2 Integer 10
+   userLabel String "EutranFreqRelation_9360"
+   barredCnOperatorRef Array Reference 1
+     "ManagedElement=1,RncFunction=1,CnOperator=1"
+)
+CREATE
+(
+   parent "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+   identity "40790"
+   moType EutranFreqRelation
+   exception none
+   nrOfAttributes 13
+   cellReselectionPriority Integer 5
+   coSitedCellAvailable Integer 1
+   eutranFrequencyRef Ref "ManagedElement=1,RncFunction=1,EutraNetwork=EUTRAN_1,EutranFrequency=40790"
+   qQualMin Integer -17
+   qRxLevMin Integer -110
+   redirectionOrder Integer 1
+   thresh2dRwr Integer -98
+   threshHigh Integer 0
+   threshHigh2 Integer 10
+   threshLow Integer 0
+   threshLow2 Integer 10
+   userLabel String "EutranFreqRelation_40790"
+   barredCnOperatorRef Array Reference 1
+     "ManagedElement=1,RncFunction=1,CnOperator=2"
+)
+SET
+(
+	mo "ManagedElement=1,RncFunction=1,IubLink={iublink}"
+	exception none
+	ulHwAdm Integer 95
+)
+SET
+(
+	mo "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+	exception none
+	anrEutranUtranCellConfig Struct
+      nrOfElements 1
+         anrEnabled Integer 0
+)
+SET
+(
+	mo "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+	exception none
+	anrIafUtranCellConfig Struct
+      nrOfElements 4
+         anrEnabled Integer 1
+         relationAddEnabled Integer 1
+		 relationRemoveEnabled Integer 1
+		 sib11IafAnclEnabled Integer 1
+)
+SET
+(
+	mo "ManagedElement=1,RncFunction=1,UtranCell={utrancell}"
+	exception none
+	anrIefUtranCellConfig Struct
+      nrOfElements 2
+         anrEnabled Integer 1
+		 sib11IefAnclEnabled Integer 1
+)
