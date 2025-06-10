@@ -60,7 +60,7 @@ bchPower : -31
 cId : {cellid}
 cbsSchedulePeriodLength : 64
 cellBroadcastSac : -1
-cellReserved : 0
+cellReserved : 1
 cellUpdateConfirmCsInitRepeat : 3
 cellUpdateConfirmPsInitRepeat : 3
 codeLoadThresholdDlSf128 : 100
